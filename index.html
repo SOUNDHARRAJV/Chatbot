@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SRK's Temporary AI Chatbot</title>
   <style>
+    html, body {
+      height: 100%;
+    }
+
     * {
       box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,10 +17,8 @@
     body {
       margin: 0;
       background: linear-gradient(to right, #e3f2fd, #ffffff);
-      height: 100dvh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
 
     .header {
@@ -32,7 +34,6 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      flex-shrink: 0;
     }
 
     .header button {
@@ -56,15 +57,14 @@
       display: flex;
       flex-direction: column;
       min-height: 0;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(8px);
     }
 
     #chat-container {
       flex: 1;
       padding: 12px;
       overflow-y: auto;
-      background: transparent;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
       display: flex;
       flex-direction: column;
       min-height: 0;
@@ -87,7 +87,6 @@
       background: linear-gradient(135deg, #d2e3fc, #bbdefb);
       color: #0b3d91;
       border-top-right-radius: 0;
-      margin-left: auto;
     }
 
     .bot-message {
@@ -95,7 +94,6 @@
       background: linear-gradient(135deg, #e8f0fe, #e3f2fd);
       color: #202124;
       border-top-left-radius: 0;
-      margin-right: auto;
     }
 
     #input-area {
@@ -105,7 +103,6 @@
       border-top: 1px solid #ddd;
       align-items: center;
       backdrop-filter: blur(10px);
-      flex-shrink: 0;
     }
 
     #message-input {
@@ -147,7 +144,6 @@
       height: 18px;
       fill: white;
       transform: rotate(-45deg);
-      display: block;
     }
 
     @keyframes fadeIn {
@@ -207,8 +203,7 @@
 
   <div class="chat-wrapper">
     <div id="chat-container">
-      <div class="bot-message">Hey yo! What's up biiaaaaaaatch!
-Note: The chat is temporary</div>
+      <div class="bot-message">Hey yo! What's up biiaaaaaaatch!<br>Note: The chat is temporary</div>
     </div>
 
     <div id="input-area">
@@ -235,8 +230,14 @@ Note: The chat is temporary</div>
       }
     });
 
+    messageInput.addEventListener('focus', () => {
+      setTimeout(() => {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }, 300);
+    });
+
     function startNewConversation() {
-      chatContainer.innerHTML = '<div class="bot-message">Hey yo! What\'s up biiaaaaaaatch!\nNote: The chat is temporary</div>';
+      chatContainer.innerHTML = '<div class="bot-message">Hey yo! What\'s up biiaaaaaaatch!<br>Note: The chat is temporary</div>';
     }
 
     async function sendMessage() {
@@ -258,8 +259,7 @@ Note: The chat is temporary</div>
                   parts: [{ text: userMessageText }]
                 }]
               })
-            }
-          );
+            });
 
           if (!response.ok) {
             const errorData = await response.json();
